@@ -12,6 +12,8 @@ Express Starter write for fasting my development server
 * Multer
 * Body-parser
 * Sequelize-cli
+* Morgan
+* Joi
 
 ## Dev Dependencies
 
