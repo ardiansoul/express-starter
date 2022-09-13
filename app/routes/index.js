@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const V_1 = require("V_1/index")
 
 // import route
 const User = require("./User");
@@ -10,6 +11,6 @@ router.get("/", (req, res) => {
 });
 
 // use route
-router.use("/users", User);
+router.use("/v1", V_1);
 
 module.exports = router;
