@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
-// import route
-const User = require("./User");
+const V_1 = require("./V_1")
 
 // root route
 router.get("/", (req, res) => {
@@ -10,6 +8,6 @@ router.get("/", (req, res) => {
 });
 
 // use route
-router.use("/users", User);
+router.use("/v1", V_1);
 
 module.exports = router;
