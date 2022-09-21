@@ -4,4 +4,4 @@ const User = require("./User");
 
 router.use(User)
 
-export default router
+module.exports = router
