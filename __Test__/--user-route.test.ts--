@@ -1,0 +1,31 @@
+import * as supertest from "supertest";
+
+const request = supertest("localhost:5000");
+
+describe("API Test for users route", () => {
+  const expectResponse = {
+    data: expect.any(Object || Array),
+    status: expect.any(Number),
+  };
+
+  const body = {
+    username: "sabrina",
+    password: "12345678",
+    role: "",
+  };
+
+  it("should return a response and 201 status code for create a user", async () => {
+    const response = await request.post("/api/v1/users/").send(body).expect(201);
+    expect(response.body).toMatchObject(expectResponse);
+  });
+
+  it("should return a response and 200 status code for get all users", async () => {
+    const response = await request.get("/api/v1/users/").expect(200);
+    expect(response.body).toMatchObject(expectResponse);
+  });
+
+  it("should return a response and 200 status code for get a user", async () => {
+    const response = await request.get("/api/v1/users/d91cbee7-8e3a-4688-b93b-ee15d08c314a").expect(200);
+    expect(response.body).toMatchObject(expectResponse);
+  });
+});

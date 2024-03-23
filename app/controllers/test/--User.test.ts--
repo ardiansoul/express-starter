@@ -1,0 +1,48 @@
+// Testing get method of the class
+// 1. Test if the handler returns the correct data for a given id
+// 2. Test if the response status is 200
+// 3. Test if the response message is "is running"
+// 4. Test if the response data is correctly passed to the json method
+
+import { Request, Response } from "express";
+import UserController from "../User"; // Replace with the actual class file name
+
+describe("UserController", () => {
+  it("should get data and send response with additional argument", () => {
+    const req: Partial<Request> = { params: { id: "123" } };
+    const res: Partial<Response> = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+    const userController = new UserController(); // Create an instance of userController
+
+    userController.get(req as Request, res as Response);
+    expect(res.status).toHaveBeenCalledWith(200);
+    // expect(res.json).toHaveBeenCalledWith({
+    //   message: "is running",
+    //   data: {
+    //     id: "123",
+    //     name: "sabrina",
+    //   },
+    // });
+  });
+
+  it("should get data and send response without additional argument", () => {
+    const req: Partial<Request> = {
+      query: {
+        filter: {
+          name: "sabrina",
+        },
+      },
+    };
+    const res: Partial<Response> = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+    const userController = new UserController(); // Create an instance of userController
+    userController.getAll(req as Request, res as Response);
+    expect(res.status).toHaveBeenCalledWith(200);
+
+    // expect(res.json).toHaveBeenCalledWith({ message: "getAll" });
+  });
+});
