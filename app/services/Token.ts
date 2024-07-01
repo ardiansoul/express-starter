@@ -15,7 +15,7 @@ export default class TokenService {
     const token = this.repository.create(data);
 
     const errors = await validate(token, { stopAtFirstError: true });
-
+    console.log(errors, "token");
     if (errors.length > 0) {
       throw new ValidationError(`Validation failed: ${errors.map((error) => error.constraints)}`, false);
     }

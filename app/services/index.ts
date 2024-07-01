@@ -14,6 +14,7 @@ type ServiceMap = {
   Token: TokenService;
 };
 export default class ServiceFactory {
+  private static serviceInstance: { [key in ServiceType]?: ServiceMap[key] } = {};
   public static getInstance<T extends ServiceType>(serviceName: T): ServiceMap[T] {
     const ServiceMap: { [key in ServiceType]: new () => ServiceMap[key] } = {
       User: UserService,
@@ -27,6 +28,10 @@ export default class ServiceFactory {
       throw new Error(`Service ${serviceName} not found`);
     }
 
-    return new ServiceMap[serviceName]() as ServiceMap[T];
+    if (!this.serviceInstance[serviceName]) {
+      this.serviceInstance[serviceName] = new ServiceMap[serviceName]();
+    }
+
+    return this.serviceInstance[serviceName] as ServiceMap[T];
   }
 }

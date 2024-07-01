@@ -8,7 +8,7 @@ import {
   generateToken,
   verifyToken,
 } from "../utlis/encryption";
-import { generateCode, generateExpiredAt } from "../utlis/generate";
+import { generateCode, generateExpiredAt, generateTemplatetoHTML } from "../utlis/generate";
 import { AuthenticationError, ValidationError } from "../utlis/responseHandler";
 
 export default class AuthHandler {
@@ -105,20 +105,25 @@ export default class AuthHandler {
     const tokenService = ServiceFactory.getInstance("Token");
     const emailService = new Message.EmailService();
     const userExist = await userService.getByEmail(email);
-
+    console.log(userExist, "USER EXIST");
     if (userExist) {
+      console.log("calling it");
       const { code } = await tokenService.create({
         userId: userExist.id,
         code: generateCode(),
         expireAt: generateExpiredAt(1, "hour"),
-        type: "password_reset",
+        type: "reset-password",
+      });
+      const html = generateTemplatetoHTML("templates/test-email.hbs", {
+        port: process.env.PORT || 5000,
+        code: code,
       });
 
       emailService.send({
         to: userExist.email,
         subject: "Reset Password",
         message: `http://localhost:${process.env.PORT || 5000}/auth/reset-password/${code}`,
-        html: `<a href="http://localhost:${process.env.PORT || 5000}/auth/reset-password/${code}">Reset Password</a>`,
+        html: html,
         from: process.env.NODEMAILER_EMAIL,
       });
     }
@@ -129,7 +134,7 @@ export default class AuthHandler {
   public async resetPassword(code: string, password: string) {
     const tokenService = ServiceFactory.getInstance("Token");
 
-    const codeExist = await tokenService.getByCode(code, "password_reset");
+    const codeExist = await tokenService.getByCode(code, "reset-password");
 
     if (codeExist) {
       const userService = ServiceFactory.getInstance("User");
@@ -200,5 +205,12 @@ export default class AuthHandler {
   public async resendEmailVerification() {
     // TODO
     // implement resend email verification
+  }
+
+  public async checkPermission(name: string) {
+    // TODO
+    // implement get permissions
+
+    return true;
   }
 }

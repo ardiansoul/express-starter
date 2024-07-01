@@ -27,6 +27,9 @@ export class Role {
   @IsNotEmpty({ message: "Description is required" })
   description: string;
 
+  @Column("simple-array", { nullable: true })
+  permissions: string[];
+
   @OneToMany(() => User, (user) => user.role)
   user: User[];
 

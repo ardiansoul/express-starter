@@ -1,21 +1,22 @@
-import * as express from "express";
-import RoleController from "../../controllers/Role";
-import api_paths from "../api_path";
+import { Application } from "express";
+import { IRouteConfig } from "..";
+import roleController from "../../controllers/role.controller";
+import { validateRequest } from "../../utlis/validateRequest";
+import { RoleRequest } from "../../dtos/Role";
 
-export default class RoleRoutes {
-  private router: express.Router;
-  private apiPath: typeof api_paths.role;
-  private controller: RoleController;
-  constructor() {
-    this.router = express.Router();
-    this.apiPath = api_paths.role;
-    this.controller = new RoleController();
+export default class RoleRoutes implements IRouteConfig {
+  app: Application;
+  name: string = "Role";
+  constructor(app: Application) {
+    this.app = app;
+    this.configureRoutes();
   }
 
-  setupRoutes() {
-    this.router.get(this.apiPath.get_all, this.controller.getAll.bind(this.controller));
-    this.router.get(this.apiPath.get, this.controller.get.bind(this.controller));
-    this.router.post(this.apiPath.add, this.controller.create.bind(this.controller));
-    return this.router;
+  configureRoutes(): Application {
+    this.app.route("/roles").get(roleController.getAll).post(validateRequest(RoleRequest), roleController.create);
+
+    this.app.route("/roles/:id").get(roleController.getById).put(roleController.update).delete(roleController.delete);
+
+    return this.app;
   }
 }

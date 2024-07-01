@@ -35,6 +35,7 @@ class EmailService implements MessageDelivery {
   }
   async send(body: typeof initialBody.email) {
     try {
+      console.log("called", body);
       const result = await this.service.sendMail(body);
       console.log(result);
 
@@ -79,7 +80,6 @@ class WhatsAppService implements MessageDelivery {
   constructor(phoneNumber: string) {
     this.phoneNumber = phoneNumber;
   }
-  async register(service: any) {}
   async send(message: any) {
     return true;
   }

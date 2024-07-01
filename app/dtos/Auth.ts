@@ -26,7 +26,7 @@ export class RegisterRequest {
 
 export class ResetPasswordRequest {
   @IsNotEmpty()
-  @IsEmail()
+  @MinLength(8)
   password: string;
 }
 
@@ -45,6 +45,8 @@ export class RefreshTokenRequest {
 }
 
 export class ForgotPasswordRequest {
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
 }
 

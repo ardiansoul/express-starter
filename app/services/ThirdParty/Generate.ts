@@ -1,6 +1,6 @@
 import * as pdfkit from "pdfkit";
 import * as handlebars from "handlebars";
-import { PathOrFileDescriptor, readFileSync } from "fs";
+import {  readFileSync } from "fs";
 import path = require("path");
 
 interface DocumentGenerationService {

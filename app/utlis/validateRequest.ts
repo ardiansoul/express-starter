@@ -6,7 +6,9 @@ import { ResponseHandler, ValidationError } from "./responseHandler";
 export function validateRequest(validator: ClassConstructor<any>) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log(validator, req.body);
       const data = plainToInstance(validator, req.body);
+      console.log(data, "Data");
       const errors = await validate(data, { stopAtFirstError: true });
       console.log(errors);
       if (errors.length > 0) {
